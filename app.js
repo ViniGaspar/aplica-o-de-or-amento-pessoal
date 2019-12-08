@@ -45,10 +45,10 @@ class Bd {
 
     recuperarTodosRegistros() {
         let despesas = Array ()
-        let id = JSON.parse(localStorage.getItem('id'))
+        let id = localStorage.getItem('id')
 
         for(let i = 1; i <= id; i++){
-            let despesa = localStorage.getItem(i)
+            let despesa = JSON.parse(localStorage.getItem(i))
 
             if(despesa === null){
                 continue
@@ -119,12 +119,15 @@ function carregaListaDespesas() {
     despesas = bd.recuperarTodosRegistros()
 
     // Selecionando o elemento tbody da tabela
-    let listaDespesas = document.getElementById('listaDespesas')
+    let listaDespesas = document.getElementById("listaDespesas")
+
+    
 
     despesas.forEach(function(d) {
         
         // criando linha(tr)
-        let linha =  listaDespesas.insertRow()
+    
+       let linha = listaDespesas.insertRow()
 
         //criando colunas (td)
         linha.insertCell(0).innerHTML =  d.dia + '/' + d.mes + '/' + d.ano
@@ -147,6 +150,7 @@ function carregaListaDespesas() {
         linha.insertCell(1).innerHTML = d.tipo
         linha.insertCell(2).innerHTML = d.descricao
         linha.insertCell(3).innerHTML = d.valor
+        
 
     })
 
