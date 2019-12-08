@@ -87,13 +87,20 @@ function cadastrarDespesa() {
 
     )
     if(despesa.validarDados()) {
-       bd.gravar(despesa)
+       //bd.gravar(despesa)
 
        document.getElementById('modal_titulo').innerHTML = 'Registro inserido com sucesso'       
        document.getElementById('modal_titulo_div').className = 'modal-header text-success'
        document.getElementById('modal_conteudo').innerHTML = 'Despesa foi cadastrado com sucesso'
        document.getElementById('modal_botao').innerHTML = 'voltar'
        document.getElementById('modal_botao').className = 'btn btn-primary btn-success'
+
+       document.getElementById('ano').value = ''
+       document.getElementById('mes').value = ''
+       document.getElementById('dia').value = ''
+       document.getElementById('tipo').value = ''
+       document.getElementById('valor').value = ''
+       document.getElementById('descricao').value = ''
        
 
         $('#modalRegistraDespesa').modal('show')
