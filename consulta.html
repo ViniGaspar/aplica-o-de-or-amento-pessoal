@@ -55,6 +55,13 @@
           <select class="form-control" id="ano">
             <option value="">Ano</option>
             <option value="2018">2018</option>
+            <option value="2017">2017</option>
+            <option value="2016">2016</option>
+            <option value="2015">2015</option>
+            <option value="2014">2014</option>
+            <option value="2013">2013</option>
+            <option value="2012">2012</option>
+            <option value="2011">2011</option>
           </select>
         </div>
 
@@ -82,7 +89,7 @@
 
         <div class="col-md-6">
           <select class="form-control" id="tipo">
-            <option>Tipo</option>
+            <option value="">Tipo</option>
             <option value="1">Alimentação</option>
             <option value="2">Educação</option>
             <option value="3">Lazer</option>
@@ -102,7 +109,7 @@
         </div>
 
         <div class="col-md-2 d-flex justify-content-end">
-          <button type="button" class="btn btn-primary">
+          <button type="button" class="btn btn-primary" onclick="pesquisarDespesa()">
             <i class="fas fa-search"></i>
           </button>
         </div>
@@ -127,6 +134,24 @@
           </table>
         </div>
       </div>
+    </div>
+    <!-- Modal de erro -->
+    <div class="modal fade" id="modalDeleta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div id="modal_titulo_div" >
+              <h5 class="modal-title" id="modal_titulo" ></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="modal_conteudo">          
+            </div>
+            <div class="modal-footer">
+              <button type="button" data-dismiss="modal" id="modal_botao"></button>
+            </div>
+          </div>
+        </div>
     </div>
   </body>	
 

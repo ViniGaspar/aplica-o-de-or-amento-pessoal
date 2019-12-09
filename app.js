@@ -54,18 +54,63 @@ class Bd {
                 continue
             }
 
-            despesas.push(despesa)
+            despesa.id = i
 
-          
+            despesas.push(despesa)          
 
         }
             
         return despesas
 
+        
+    }
+    pesquisar(despesa){
+        let despesasFiltradas = Array()
+        despesasFiltradas = this.recuperarTodosRegistros()
+
+        //ano
+        if(despesa.ano != ''){
+            despesasFiltradas = despesasFiltradas.filter(d => d.ano == despesa.ano)
+        }
+        //mes
+        if(despesa.mes != ''){
+            despesasFiltradas = despesasFiltradas.filter(d => d.mes == despesa.mes)
+        }
+        //dia
+        if(despesa.dia != ''){
+            despesasFiltradas = despesasFiltradas.filter(d => d.dia == despesa.dia)
+        }
+        //tipo
+        if(despesa.tipo != ''){
+            despesasFiltradas = despesasFiltradas.filter(d => d.tipo == despesa.tipo)
+        }
+        //descricao
+        if(despesa.descricao != ''){
+            despesasFiltradas = despesasFiltradas.filter(d => d.descricao == despesa.descricao)
+        }
+        //valor
+        if(despesa.valor != ''){
+            despesasFiltradas = despesasFiltradas.filter(d => d.valor == despesa.valor)
+        }
+        return despesasFiltradas
+    }
+
+    remover(id){
+        localStorage.removeItem(id)
     }
 }
 
 let bd = new Bd()
+
+function apagarCampo(){    
+    document.getElementById('ano').value = ''
+    document.getElementById('mes').value = ''
+    document.getElementById('dia').value = ''
+    document.getElementById('tipo').value = ''
+    document.getElementById('valor').value = ''
+    document.getElementById('descricao').value = ''
+
+}
 
 
 
@@ -87,7 +132,7 @@ function cadastrarDespesa() {
 
     )
     if(despesa.validarDados()) {
-       //bd.gravar(despesa)
+       bd.gravar(despesa)
 
        document.getElementById('modal_titulo').innerHTML = 'Registro inserido com sucesso'       
        document.getElementById('modal_titulo_div').className = 'modal-header text-success'
@@ -95,12 +140,7 @@ function cadastrarDespesa() {
        document.getElementById('modal_botao').innerHTML = 'voltar'
        document.getElementById('modal_botao').className = 'btn btn-primary btn-success'
 
-       document.getElementById('ano').value = ''
-       document.getElementById('mes').value = ''
-       document.getElementById('dia').value = ''
-       document.getElementById('tipo').value = ''
-       document.getElementById('valor').value = ''
-       document.getElementById('descricao').value = ''
+       apagarCampo()
        
 
         $('#modalRegistraDespesa').modal('show')
@@ -119,14 +159,16 @@ function cadastrarDespesa() {
 
 }
 
-function carregaListaDespesas() {
+function carregaListaDespesas(despesas = Array(), filtro = false) {
 
-    let despesas = Array()
+    if(despesas.length == 0 && filtro == false){
+        despesas = bd.recuperarTodosRegistros()
+    }
 
-    despesas = bd.recuperarTodosRegistros()
 
     // Selecionando o elemento tbody da tabela
     let listaDespesas = document.getElementById("listaDespesas")
+    listaDespesas.innerHTML = ''
 
     
 
@@ -157,10 +199,55 @@ function carregaListaDespesas() {
         linha.insertCell(1).innerHTML = d.tipo
         linha.insertCell(2).innerHTML = d.descricao
         linha.insertCell(3).innerHTML = d.valor
+
+        let btn = document.createElement('button')
+        btn.className = 'btn btn-danger'
+        btn.innerHTML = '<i class="fa fa-times" ></i>'
+        btn.id = `id_despesa_${d.id}`
+        btn.onclick = function(){
+            let id = this.id.replace('id_despesa_', '')
+            bd.remover(id)
+            window.location.reload()
+            
+            document.getElementById('modal_titulo').innerHTML = 'Despesa deletada'       
+            document.getElementById('modal_titulo_div').className = 'modal-header text-success'
+            document.getElementById('modal_conteudo').innerHTML = 'Despesa foi deletada com sucesso'
+            document.getElementById('modal_botao').innerHTML = 'voltar'
+            document.getElementById('modal_botao').className = 'btn btn-primary btn-success'      
+       
+
+            $('#modalDeleta').modal('show')
+            
+        }
+        linha.insertCell(4).append(btn)
         
 
     })
 
+}
+
+function pesquisarDespesa(){
+    let ano = document.getElementById('ano')
+    let mes = document.getElementById('mes')
+    let dia = document.getElementById('dia')
+    let tipo = document.getElementById('tipo')
+    let descricao = document.getElementById('descricao')
+    let valor = document.getElementById('valor')
+
+    let despesaUnica = new Despesa(
+        ano.value,
+        mes.value,
+        dia.value,
+        tipo.value,
+        descricao.value,
+        valor.value)
+
+    let despesas = bd.pesquisar(despesaUnica)     
+    
+
+    apagarCampo()
+
+    this.carregaListaDespesas(despesas, true)
 }
 
 
